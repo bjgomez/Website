@@ -4,674 +4,935 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ben Gomez — Cybersecurity & IT</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --navy:    #0D1B2A;
-      --slate:   #1A2E42;
-      --slate2:  #223650;
-      --cyan:    #00D4FF;
-      --cyan-dim:#007A99;
-      --white:   #F0F4F8;
-      --gray:    #8BA3BC;
-      --gray2:   #4A6580;
+      --bg: #0a0e0f;
+      --bg2: #0f1518;
+      --bg3: #141c1f;
+      --border: #1e2d31;
+      --green: #00ff9d;
+      --green-dim: #00c87a;
+      --green-glow: rgba(0,255,157,0.12);
+      --cyan: #00d4ff;
+      --text: #c8d8d4;
+      --text-dim: #6a8a84;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Inter', sans-serif;
     }
 
-    html { scroll-behavior: smooth; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 70px;
+    }
 
     body {
-      background: var(--navy);
-      color: var(--white);
-      font-family: 'Inter', sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* Scanline overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+      pointer-events: none;
+      z-index: 999;
     }
 
     /* NAV */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1.1rem 2.5rem;
-      background: rgba(13, 27, 42, 0.85);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(10,14,15,0.92);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
+
     .nav-logo {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
-      color: var(--cyan);
-      letter-spacing: 0.04em;
+      font-family: var(--mono);
+      color: var(--green);
+      font-size: 14px;
+      letter-spacing: 0.05em;
     }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a {
-      color: var(--gray);
+
+    .nav-logo span { color: var(--text-dim); }
+
+    nav ul {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--text-dim);
       text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
+      font-size: 13px;
+      font-family: var(--mono);
+      letter-spacing: 0.05em;
       transition: color 0.2s;
     }
-    .nav-links a:hover { color: var(--cyan); }
+
+    nav a:hover { color: var(--green); }
 
     /* HERO */
-    #hero {
+    .hero {
       min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 7rem 2rem 4rem;
-      position: relative; overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 6rem 2rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
     }
-    .hero-grid-bg {
-      position: absolute; inset: 0;
-      background-image:
-        linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+
+    .hero-inner { width: 100%; }
+
+    .hero-prompt {
+      font-family: var(--mono);
+      color: var(--text-dim);
+      font-size: 13px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .hero-glow {
-      position: absolute;
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
-      top: 50%; left: 50%; transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-    .hero-inner { position: relative; max-width: 820px; }
-    .hero-eyebrow {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      color: var(--cyan);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1.2rem;
-      display: flex; align-items: center; gap: 0.6rem;
-    }
-    .hero-eyebrow::before {
-      content: '';
-      display: inline-block; width: 28px; height: 1px;
-      background: var(--cyan);
-    }
-    h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.8rem, 7vw, 5rem);
-      font-weight: 700;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.3rem;
-    }
-    .hero-role {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
-      color: var(--cyan);
-      margin-bottom: 1.6rem;
-      min-height: 2rem;
-    }
+
     .cursor {
       display: inline-block;
-      width: 2px; height: 1.2em;
-      background: var(--cyan);
-      vertical-align: middle;
-      margin-left: 2px;
+      width: 8px;
+      height: 14px;
+      background: var(--green);
       animation: blink 1s step-end infinite;
+      vertical-align: middle;
     }
-    @keyframes blink { 50% { opacity: 0; } }
-    .hero-bio {
-      font-size: 1.05rem;
-      color: var(--gray);
-      max-width: 580px;
-      margin-bottom: 2.4rem;
-      line-height: 1.75;
-    }
-    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-primary {
-      background: var(--cyan);
-      color: var(--navy);
-      padding: 0.8rem 1.8rem;
-      border-radius: 4px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
-    .btn-secondary {
-      border: 1px solid var(--cyan-dim);
-      color: var(--cyan);
-      padding: 0.8rem 1.8rem;
-      border-radius: 4px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .btn-secondary:hover { background: rgba(0,212,255,0.08); transform: translateY(-1px); }
 
-    /* SECTIONS */
-    section { padding: 5rem 2rem; }
-    .section-inner { max-width: 900px; margin: 0 auto; }
-    .section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      margin-bottom: 0.6rem;
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: #e8f4f0;
+      margin-bottom: 0.5rem;
     }
-    h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
+
+    .hero h1 span { color: var(--green); }
+
+    .hero-role {
+      font-family: var(--mono);
+      color: var(--cyan);
+      font-size: 14px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-bio {
+      max-width: 580px;
+      color: var(--text-dim);
+      font-size: 16px;
+      line-height: 1.8;
       margin-bottom: 2.5rem;
     }
-    .divider {
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      font-family: var(--mono);
+      font-size: 13px;
+      padding: 0.6rem 1.4rem;
+      border-radius: 3px;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+      cursor: pointer;
       border: none;
-      border-top: 1px solid rgba(0,212,255,0.12);
-      margin: 0;
     }
 
+    .btn-primary {
+      background: var(--green);
+      color: #0a0e0f;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover { background: var(--green-dim); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--green);
+      border: 1px solid var(--green);
+    }
+
+    .btn-ghost:hover { background: var(--green-glow); }
+
+    /* SECTIONS */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--green);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #e8f4f0;
+      margin-bottom: 2.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    /* SECURITY STACK */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .stack-card {
+      background: var(--bg2);
+      padding: 1.5rem;
+      transition: background 0.2s;
+    }
+
+    .stack-card:hover { background: var(--bg3); }
+
+    .stack-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .stack-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      background: var(--green-glow);
+      border: 1px solid rgba(0,255,157,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .stack-name {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--green);
+    }
+
+    .stack-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    .stack-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--green);
+      margin-top: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+
+    @media (min-width: 860px) {
+      .stack-card-wide {
+        grid-column: span 2;
+      }
+      .stack-card-wide:last-child {
+        grid-column: span 1;
+      }
+    }
+
+    .stack-status::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* SCAN RESULTS */
+    .scan-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .scan-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .scan-box-header {
+      padding: 0.6rem 1rem;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .scan-before .scan-box-header { color: #ff6b6b; background: rgba(255,107,107,0.05); }
+    .scan-after .scan-box-header { color: var(--green); background: var(--green-glow); }
+
+    .scan-body { padding: 1rem; }
+
+    .scan-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 0.5rem;
+    }
+
+    .scan-item .icon { flex-shrink: 0; }
+
+    .scan-before .scan-item .icon { color: #ff6b6b; }
+    .scan-after .scan-item .icon { color: var(--green); }
+
     /* SKILLS */
-    #skills { background: var(--slate); }
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
     }
-    .skill-card {
-      background: var(--slate2);
-      border: 1px solid rgba(0,212,255,0.1);
-      border-radius: 6px;
-      padding: 1.4rem 1.5rem;
-      transition: border-color 0.2s, transform 0.15s;
+
+    .skill-group {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.25rem;
     }
-    .skill-card:hover { border-color: rgba(0,212,255,0.35); transform: translateY(-2px); }
-    .skill-card-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      color: var(--cyan);
+
+    .skill-group h3 {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--green);
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 0.7rem;
+      margin-bottom: 0.75rem;
     }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
     .tag {
-      font-size: 0.78rem;
-      background: rgba(0,212,255,0.08);
-      color: var(--gray);
-      border: 1px solid rgba(0,212,255,0.14);
-      border-radius: 3px;
-      padding: 0.25rem 0.55rem;
-      font-family: 'Inter', sans-serif;
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
     }
 
     /* EXPERIENCE */
-    #experience { background: var(--navy); }
-    .timeline { display: flex; flex-direction: column; gap: 0; }
-    .timeline-item {
-      display: grid;
-      grid-template-columns: 160px 1fr;
-      gap: 0 2rem;
-      padding: 2rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+    .exp-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .exp-item {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--green);
+      border-radius: 0 4px 4px 0;
+      padding: 1.5rem;
     }
-    .timeline-item:last-child { border-bottom: none; }
-    .timeline-meta {
-      padding-top: 0.15rem;
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
     }
-    .timeline-date {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--gray2);
-      letter-spacing: 0.04em;
-    }
-    .timeline-company {
-      font-size: 0.82rem;
-      color: var(--gray);
-      margin-top: 0.3rem;
-    }
-    .timeline-role {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.05rem;
+
+    .exp-title {
       font-weight: 600;
-      margin-bottom: 0.7rem;
+      color: #e8f4f0;
+      font-size: 15px;
     }
-    .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
-    .timeline-bullets li {
-      font-size: 0.9rem;
-      color: var(--gray);
-      padding-left: 1.1rem;
-      position: relative;
-      line-height: 1.55;
-    }
-    .timeline-bullets li::before {
-      content: '›';
-      position: absolute; left: 0;
+
+    .exp-company {
+      font-family: var(--mono);
+      font-size: 12px;
       color: var(--cyan);
-      font-size: 1rem;
+    }
+
+    .exp-duration {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+
+    .exp-bullets { list-style: none; }
+
+    .exp-bullets li {
+      font-size: 13px;
+      color: var(--text-dim);
+      padding: 0.2rem 0;
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .exp-bullets li::before {
+      content: '>';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-family: var(--mono);
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .project-card:hover { border-color: var(--green); }
+
+    .project-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+
+    .project-name {
+      font-weight: 600;
+      color: #e8f4f0;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.6;
     }
 
     /* CERTS */
-    #certifications { background: var(--slate); }
     .certs-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 1rem;
     }
-    .cert-card {
-      border: 1px solid rgba(0,212,255,0.12);
-      border-radius: 6px;
-      padding: 1.2rem 1.4rem;
-      display: flex; align-items: flex-start; gap: 1rem;
-      background: var(--navy);
-      transition: border-color 0.2s;
-    }
-    .cert-card:hover { border-color: rgba(0,212,255,0.35); }
-    .cert-icon {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: rgba(0,212,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      color: var(--cyan); font-size: 1rem;
-    }
-    .cert-name { font-size: 0.9rem; font-weight: 500; line-height: 1.4; }
-    .cert-issuer { font-size: 0.78rem; color: var(--gray); margin-top: 0.2rem; }
 
-    /* PROJECTS */
-    #projects { background: var(--navy); }
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.2rem;
+    .cert-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
     }
-    .project-card {
-      background: var(--slate);
-      border: 1px solid rgba(0,212,255,0.1);
-      border-radius: 6px;
-      padding: 1.6rem;
-      transition: border-color 0.2s, transform 0.15s;
+
+    .cert-icon { font-size: 1.25rem; flex-shrink: 0; }
+
+    .cert-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #e8f4f0;
+      margin-bottom: 0.25rem;
     }
-    .project-card:hover { border-color: rgba(0,212,255,0.35); transform: translateY(-2px); }
-    .project-header {
-      display: flex; align-items: center; gap: 0.7rem;
-      margin-bottom: 0.8rem;
+
+    .cert-issuer {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
     }
-    .project-icon { font-size: 1.3rem; }
-    .project-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-    }
-    .project-desc { font-size: 0.88rem; color: var(--gray); line-height: 1.6; }
 
     /* EDUCATION */
-    #education { background: var(--slate); }
-    .edu-list { display: flex; flex-direction: column; gap: 1.2rem; }
+    .edu-list { display: flex; flex-direction: column; gap: 1rem; }
+
     .edu-item {
-      background: var(--navy);
-      border: 1px solid rgba(0,212,255,0.1);
-      border-radius: 6px;
-      padding: 1.3rem 1.5rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
-    .edu-school {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-    .edu-degree { font-size: 0.88rem; color: var(--gray); }
-    .edu-status {
-      display: inline-block;
-      margin-top: 0.5rem;
-      font-size: 0.72rem;
-      font-family: 'JetBrains Mono', monospace;
-      background: rgba(0,212,255,0.1);
-      color: var(--cyan);
-      border-radius: 3px;
-      padding: 0.2rem 0.5rem;
-      letter-spacing: 0.06em;
+
+    .edu-degree { font-weight: 500; color: #e8f4f0; }
+    .edu-school { font-family: var(--mono); font-size: 12px; color: var(--cyan); margin-top: 0.2rem; }
+
+    .edu-badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      padding: 0.3rem 0.7rem;
+      border-radius: 2px;
+      background: var(--green-glow);
+      border: 1px solid rgba(0,255,157,0.3);
+      color: var(--green);
+      letter-spacing: 0.05em;
     }
 
     /* CONTACT */
-    #contact { background: var(--navy); text-align: center; }
-    #contact .section-inner { max-width: 600px; }
-    .contact-heading {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.8rem, 4vw, 2.4rem);
-      font-weight: 700;
-      margin-bottom: 0.8rem;
+    .contact-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2.5rem;
+      text-align: center;
     }
-    .contact-sub { color: var(--gray); margin-bottom: 2rem; font-size: 0.95rem; }
+
+    .contact-box p {
+      color: var(--text-dim);
+      margin-bottom: 2rem;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .contact-links {
-      display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
-      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
     }
+
     .contact-link {
-      display: flex; align-items: center; gap: 0.5rem;
-      color: var(--gray);
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
       text-decoration: none;
-      font-size: 0.88rem;
-      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
       transition: color 0.2s;
     }
-    .contact-link:hover { color: var(--cyan); }
+
+    .contact-link:hover { color: var(--green); }
 
     /* FOOTER */
     footer {
-      background: var(--slate);
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
       text-align: center;
-      padding: 1.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.72rem;
-      color: var(--gray2);
-      letter-spacing: 0.06em;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
     }
 
     /* RESPONSIVE */
-    @media (max-width: 640px) {
-      nav { padding: 1rem 1.2rem; }
-      .nav-links { gap: 1.2rem; }
-      .timeline-item { grid-template-columns: 1fr; gap: 0.3rem; }
-      .timeline-meta { display: flex; gap: 1rem; align-items: center; padding-top: 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .cursor { animation: none; opacity: 1; }
-      * { transition: none !important; }
+    @media (max-width: 600px) {
+      nav ul { display: none; }
+      .scan-compare { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.2rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <span class="nav-logo">bg@portfolio:~$</span>
-    <ul class="nav-links">
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+<nav>
+  <div class="nav-logo"><span>~/</span>bengomez</div>
+  <ul>
+    <li><a href="#security">security</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
 
-  <!-- HERO -->
-  <section id="hero">
-    <div class="hero-grid-bg"></div>
-    <div class="hero-glow"></div>
-    <div class="hero-inner">
-      <p class="hero-eyebrow">Available for opportunities</p>
-      <h1>Ben Gomez</h1>
-      <p class="hero-role" id="typed-role"><span class="cursor"></span></p>
-      <p class="hero-bio">
-        Aspiring cybersecurity professional with hands-on IT support experience and a passion for solving real technical problems — from OS deployments and BIOS updates to Python security scripts and Linux system administration.
-      </p>
-      <div class="hero-ctas">
-        <a href="mailto:Ben.J.Gomez@icloud.com" class="btn-primary">Get in Touch</a>
-        <a href="#experience" class="btn-secondary">View Experience</a>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-prompt">root@bengomez:~$ whoami <span class="cursor"></span></div>
+    <h1>Ben <span>Gomez</span></h1>
+    <div class="hero-role">// Cybersecurity &amp; IT Support Professional</div>
+    <p class="hero-bio">
+      Aspiring cybersecurity professional with hands-on IT support experience and a passion for solving real technical problems — from OS deployments and BIOS updates to Python security scripts and Linux system administration.
+    </p>
+    <div class="hero-actions">
+      <a href="mailto:Ben.J.Gomez@icloud.com" class="btn btn-primary">Get in Touch</a>
+      <a href="#security" class="btn btn-ghost">View Security Stack</a>
+    </div>
+  </div>
+</div>
+
+<!-- SECURITY STACK -->
+<section id="security">
+  <div class="section-label">// live production server</div>
+  <h2>Security Stack</h2>
+  <p style="color:var(--text-dim); margin-bottom:2rem; font-size:14px;">
+    This portfolio is self-hosted on a Le Potato SBC running Debian, secured and hardened end-to-end. Every layer below is actively running in production.
+  </p>
+
+  <div class="stack-grid">
+    <div class="stack-card">
+      <div class="stack-card-header">
+        <div class="stack-icon">🔒</div>
+        <div class="stack-name">Let's Encrypt / Certbot</div>
+      </div>
+      <div class="stack-desc">Trusted HTTPS certificate via DNS challenge. Auto-renews every 90 days using DuckDNS TXT record hooks.</div>
+      <div class="stack-status">ACTIVE — TLS_AES_256_GCM_SHA384</div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-card-header">
+        <div class="stack-icon">🌐</div>
+        <div class="stack-name">Apache2 + Security Headers</div>
+      </div>
+      <div class="stack-desc">Version info hidden. X-Frame-Options, X-Content-Type-Options, and X-XSS-Protection headers enforced on all responses.</div>
+      <div class="stack-status">ACTIVE — Apache httpd 2.4</div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-card-header">
+        <div class="stack-icon">🛡️</div>
+        <div class="stack-name">ModSecurity + OWASP CRS</div>
+      </div>
+      <div class="stack-desc">Web Application Firewall blocking SQL injection, XSS, and other OWASP Top 10 attacks in real time.</div>
+      <div class="stack-status">ACTIVE — Engine: ON, CRS 4.x</div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-card-header">
+        <div class="stack-icon">🚫</div>
+        <div class="stack-name">Fail2ban</div>
+      </div>
+      <div class="stack-desc">4 active jails monitoring SSH and Apache logs. Bans IPs after 3 failed attempts for 1 hour.</div>
+      <div class="stack-status">ACTIVE — 4 jails running</div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-card-header">
+        <div class="stack-icon">🔥</div>
+        <div class="stack-name">UFW Firewall</div>
+      </div>
+      <div class="stack-desc">Default deny all incoming. Only ports 22 (SSH), 80 (HTTP), and 443 (HTTPS) are explicitly allowed.</div>
+      <div class="stack-status">ACTIVE — Default deny incoming</div>
+    </div>
+
+    <div class="stack-card">
+      <div class="stack-card-header">
+        <div class="stack-icon">👥</div>
+        <div class="stack-name">CrowdSec</div>
+      </div>
+      <div class="stack-desc">Community-powered threat intelligence. Shares and receives blocklists from thousands of global servers.</div>
+      <div class="stack-status">ACTIVE — Firewall bouncer enabled</div>
+    </div>
+
+    <div class="stack-card stack-card-wide">
+      <div class="stack-card-header">
+        <div class="stack-icon">🌍</div>
+        <div class="stack-name">DuckDNS + Auto IP Update</div>
+      </div>
+      <div class="stack-desc">Dynamic DNS subdomain with a cron job updating the IP every 5 minutes to handle ISP address changes.</div>
+      <div class="stack-status">ACTIVE — Updates every 5 min</div>
+    </div>
+
+    <div class="stack-card stack-card-wide">
+      <div class="stack-card-header">
+        <div class="stack-icon">🔄</div>
+        <div class="stack-name">Auto Cert Renewal</div>
+      </div>
+      <div class="stack-desc">Certbot renewal hook scripts automatically update the DuckDNS TXT record and reload Apache on renewal.</div>
+      <div class="stack-status">ACTIVE — Runs nightly at 03:00</div>
+    </div>
+  </div>
+
+  <!-- Before/After -->
+  <div class="section-label" style="margin-top:3rem;">// nikto scan comparison</div>
+  <h2 style="margin-bottom:1rem;">Before vs After Hardening</h2>
+  <div class="scan-compare">
+    <div class="scan-box scan-before">
+      <div class="scan-box-header">BEFORE — baseline scan</div>
+      <div class="scan-body">
+        <div class="scan-item"><span class="icon">✗</span> Apache/2.4.66 version exposed</div>
+        <div class="scan-item"><span class="icon">✗</span> X-Frame-Options header missing</div>
+        <div class="scan-item"><span class="icon">✗</span> X-Content-Type-Options missing</div>
+        <div class="scan-item"><span class="icon">✗</span> X-XSS-Protection missing</div>
+        <div class="scan-item"><span class="icon">✗</span> ETags leaking inode data</div>
+        <div class="scan-item"><span class="icon">✗</span> 997 ports closed (visible)</div>
+        <div class="scan-item"><span class="icon">✗</span> 3 issues reported by Nikto</div>
       </div>
     </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-inner">
-      <p class="section-label">What I work with</p>
-      <h2>Technical Skills</h2>
-      <div class="skills-grid">
-        <div class="skill-card">
-          <p class="skill-card-label">Operating Systems</p>
-          <div class="skill-tags">
-            <span class="tag">Windows</span>
-            <span class="tag">Linux</span>
-            <span class="tag">BIOS/UEFI</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <p class="skill-card-label">IT Support</p>
-          <div class="skill-tags">
-            <span class="tag">OS Installation</span>
-            <span class="tag">Factory Resets</span>
-            <span class="tag">Antivirus Deployment</span>
-            <span class="tag">Hardware Troubleshooting</span>
-            <span class="tag">Remote Support</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <p class="skill-card-label">Networking</p>
-          <div class="skill-tags">
-            <span class="tag">TCP/IP</span>
-            <span class="tag">DNS</span>
-            <span class="tag">DHCP</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <p class="skill-card-label">Cybersecurity</p>
-          <div class="skill-tags">
-            <span class="tag">Python Scripting</span>
-            <span class="tag">Threat Analysis</span>
-            <span class="tag">Log Analysis</span>
-          </div>
-        </div>
-        <div class="skill-card">
-          <p class="skill-card-label">Tools &amp; Hardware</p>
-          <div class="skill-tags">
-            <span class="tag">CLI</span>
-            <span class="tag">PC Setup</span>
-            <span class="tag">Firmware Updates</span>
-            <span class="tag">Software Deployment</span>
-          </div>
-        </div>
+    <div class="scan-box scan-after">
+      <div class="scan-box-header">AFTER — hardened scan</div>
+      <div class="scan-body">
+        <div class="scan-item"><span class="icon">✓</span> Version hidden — "Apache" only</div>
+        <div class="scan-item"><span class="icon">✓</span> X-Frame-Options: SAMEORIGIN</div>
+        <div class="scan-item"><span class="icon">✓</span> X-Content-Type-Options: nosniff</div>
+        <div class="scan-item"><span class="icon">✓</span> X-XSS-Protection: 1; mode=block</div>
+        <div class="scan-item"><span class="icon">✓</span> ETags leaking fixed</div>
+        <div class="scan-item"><span class="icon">✓</span> 997 ports filtered by UFW</div>
+        <div class="scan-item"><span class="icon">✓</span> 0 errors reported by Nikto</div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <hr class="divider" />
-
-  <!-- EXPERIENCE -->
-  <section id="experience">
-    <div class="section-inner">
-      <p class="section-label">Where I've worked</p>
-      <h2>Work Experience</h2>
-      <div class="timeline">
-
-        <div class="timeline-item">
-          <div class="timeline-meta">
-            <p class="timeline-date">1 Year</p>
-            <p class="timeline-company">OfficeMax</p>
-          </div>
-          <div>
-            <p class="timeline-role">Print Dept. / Onsite Helpdesk IT Associate</p>
-            <ul class="timeline-bullets">
-              <li>In-store technical support and troubleshooting for customer devices</li>
-              <li>Performed factory resets, OS installations, and full system setup</li>
-              <li>Updated BIOS and firmware on supported devices</li>
-              <li>Installed and activated antivirus software using license keys</li>
-              <li>Assisted with printing, copying, and document services</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-meta">
-            <p class="timeline-date">1 Year</p>
-            <p class="timeline-company">Primavera Online School</p>
-          </div>
-          <div>
-            <p class="timeline-role">Enrollment Advisor</p>
-            <ul class="timeline-bullets">
-              <li>Assisted students with enrollment and system navigation</li>
-              <li>Maintained accurate digital records and ensured compliance</li>
-              <li>Technical and administrative support via phone and email</li>
-              <li>Resolved issues efficiently using structured problem-solving</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="timeline-meta">
-            <p class="timeline-date">—</p>
-            <p class="timeline-company">Circle K</p>
-          </div>
-          <div>
-            <p class="timeline-role">Assistant Manager</p>
-            <ul class="timeline-bullets">
-              <li>Managed daily operations, inventory, and cash handling</li>
-              <li>Supervised and trained staff members</li>
-              <li>Maintained organized workflows and delivered strong customer service</li>
-            </ul>
-          </div>
-        </div>
-
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">// what I work with</div>
+  <h2>Technical Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <h3>Operating Systems</h3>
+      <div class="skill-tags">
+        <span class="tag">Windows</span>
+        <span class="tag">Linux</span>
+        <span class="tag">Debian</span>
+        <span class="tag">Armbian</span>
+        <span class="tag">BIOS/UEFI</span>
       </div>
     </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="section-inner">
-      <p class="section-label">Things I've built</p>
-      <h2>Projects</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <div class="project-header">
-            <span class="project-icon">🐧</span>
-            <p class="project-title">Linux System Setup</p>
-          </div>
-          <p class="project-desc">Configured and maintained Linux environments for hands-on practice. Covers package management, user permissions, file system navigation, and CLI workflows.</p>
-        </div>
-        <div class="project-card">
-          <div class="project-header">
-            <span class="project-icon">🔐</span>
-            <p class="project-title">Python Security Scripts</p>
-          </div>
-          <p class="project-desc">Developed Python scripts for basic security checks and log analysis — automating threat detection tasks and building familiarity with security tooling concepts.</p>
-        </div>
+    <div class="skill-group">
+      <h3>IT Support</h3>
+      <div class="skill-tags">
+        <span class="tag">OS Installation</span>
+        <span class="tag">Factory Resets</span>
+        <span class="tag">Antivirus</span>
+        <span class="tag">Hardware</span>
+        <span class="tag">Remote Support</span>
       </div>
     </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- CERTIFICATIONS -->
-  <section id="certifications">
-    <div class="section-inner">
-      <p class="section-label">Credentials</p>
-      <h2>Certifications</h2>
-      <div class="certs-grid">
-        <div class="cert-card">
-          <div class="cert-icon">🎓</div>
-          <div>
-            <p class="cert-name">Google IT Support Professional Certificate</p>
-            <p class="cert-issuer">Coursera · Google</p>
-          </div>
-        </div>
-        <div class="cert-card">
-          <div class="cert-icon">🔧</div>
-          <div>
-            <p class="cert-name">Technical Support Fundamentals</p>
-            <p class="cert-issuer">Coursera · Google</p>
-          </div>
-        </div>
-        <div class="cert-card">
-          <div class="cert-icon">🐍</div>
-          <div>
-            <p class="cert-name">Introduction to Python for Cybersecurity</p>
-            <p class="cert-issuer">Coursera</p>
-          </div>
-        </div>
-        <div class="cert-card">
-          <div class="cert-icon">🐧</div>
-          <div>
-            <p class="cert-name">Linux Fundamentals</p>
-            <p class="cert-issuer">Coursera</p>
-          </div>
-        </div>
+    <div class="skill-group">
+      <h3>Networking</h3>
+      <div class="skill-tags">
+        <span class="tag">TCP/IP</span>
+        <span class="tag">DNS</span>
+        <span class="tag">DHCP</span>
+        <span class="tag">Port Forwarding</span>
+        <span class="tag">SSH</span>
       </div>
     </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- EDUCATION -->
-  <section id="education">
-    <div class="section-inner">
-      <p class="section-label">Academic background</p>
-      <h2>Education</h2>
-      <div class="edu-list">
-        <div class="edu-item">
-          <p class="edu-school">Central Arizona College</p>
-          <p class="edu-degree">Bachelor's Degree in Cybersecurity</p>
-          <span class="edu-status">IN PROGRESS</span>
-        </div>
-        <div class="edu-item">
-          <p class="edu-school">Rio Salado College</p>
-          <p class="edu-degree">General Educational Development (GED)</p>
-        </div>
+    <div class="skill-group">
+      <h3>Cybersecurity</h3>
+      <div class="skill-tags">
+        <span class="tag">Python Scripting</span>
+        <span class="tag">Threat Analysis</span>
+        <span class="tag">Log Analysis</span>
+        <span class="tag">WAF</span>
+        <span class="tag">IDS</span>
       </div>
     </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="section-inner">
-      <p class="section-label">Let's connect</p>
-      <h2 class="contact-heading">Open to Opportunities</h2>
-      <p class="contact-sub">Currently seeking IT support or entry-level cybersecurity roles. Feel free to reach out — I respond promptly.</p>
-      <a href="mailto:Ben.J.Gomez@icloud.com" class="btn-primary">Send an Email</a>
-      <div class="contact-links">
-        <a href="tel:4803493722" class="contact-link">📞 (480) 349-3722</a>
-        <a href="mailto:Ben.J.Gomez@icloud.com" class="contact-link">✉ Ben.J.Gomez@icloud.com</a>
-        <a href="#" class="contact-link">📍 San Tan Valley, AZ</a>
+    <div class="skill-group">
+      <h3>Server Tools</h3>
+      <div class="skill-tags">
+        <span class="tag">Apache2</span>
+        <span class="tag">ModSecurity</span>
+        <span class="tag">Fail2ban</span>
+        <span class="tag">UFW</span>
+        <span class="tag">CrowdSec</span>
+        <span class="tag">Certbot</span>
       </div>
     </div>
-  </section>
+    <div class="skill-group">
+      <h3>Tools</h3>
+      <div class="skill-tags">
+        <span class="tag">CLI</span>
+        <span class="tag">nmap</span>
+        <span class="tag">nikto</span>
+        <span class="tag">Git</span>
+        <span class="tag">Firmware Updates</span>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2026 Ben Gomez · Built with intention</p>
-  </footer>
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">// where I've worked</div>
+  <h2>Work Experience</h2>
+  <div class="exp-list">
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <div class="exp-title">Print Dept. / Onsite Helpdesk IT Associate</div>
+          <div class="exp-company">OfficeMax</div>
+        </div>
+        <div class="exp-duration">1 Year</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>In-store technical support and troubleshooting for customer devices</li>
+        <li>Performed factory resets, OS installations, and full system setup</li>
+        <li>Updated BIOS and firmware on supported devices</li>
+        <li>Installed and activated antivirus software using license keys</li>
+        <li>Assisted with printing, copying, and document services</li>
+      </ul>
+    </div>
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <div class="exp-title">Enrollment Advisor</div>
+          <div class="exp-company">Primavera Online School</div>
+        </div>
+        <div class="exp-duration">1 Year</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Assisted students with enrollment and system navigation</li>
+        <li>Maintained accurate digital records and ensured compliance</li>
+        <li>Technical and administrative support via phone and email</li>
+        <li>Resolved issues efficiently using structured problem-solving</li>
+      </ul>
+    </div>
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <div class="exp-title">Assistant Manager</div>
+          <div class="exp-company">Circle K</div>
+        </div>
+        <div class="exp-duration">—</div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Managed daily operations, inventory, and cash handling</li>
+        <li>Supervised and trained staff members</li>
+        <li>Maintained organized workflows and delivered strong customer service</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-  <!-- TYPING ANIMATION -->
-  <script>
-    const phrases = [
-      'Cybersecurity Student',
-      'IT Support Specialist',
-      'Linux Enthusiast',
-      'Python Scripter',
-    ];
-    const el = document.getElementById('typed-role');
-    let pi = 0, ci = 0, deleting = false;
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">// things I've built</div>
+  <h2>Projects</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-icon">🖥️</div>
+      <div class="project-name">Self-Hosted Hardened Web Server</div>
+      <div class="project-desc">Built and secured a production web server on a Le Potato SBC — Apache2, HTTPS, ModSecurity WAF, Fail2ban, UFW, and CrowdSec. This site runs on it.</div>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">🐧</div>
+      <div class="project-name">Linux System Setup</div>
+      <div class="project-desc">Configured and maintained Linux environments for hands-on practice. Covers package management, user permissions, file system navigation, and CLI workflows.</div>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">🔐</div>
+      <div class="project-name">Python Security Scripts</div>
+      <div class="project-desc">Developed Python scripts for basic security checks and log analysis — automating threat detection tasks and building familiarity with security tooling concepts.</div>
+    </div>
+  </div>
+</section>
 
-    function type() {
-      const phrase = phrases[pi];
-      if (!deleting) {
-        ci++;
-        el.innerHTML = phrase.slice(0, ci) + '<span class="cursor"></span>';
-        if (ci === phrase.length) {
-          deleting = true;
-          setTimeout(type, 1800);
-          return;
-        }
-      } else {
-        ci--;
-        el.innerHTML = phrase.slice(0, ci) + '<span class="cursor"></span>';
-        if (ci === 0) {
-          deleting = false;
-          pi = (pi + 1) % phrases.length;
-        }
-      }
-      setTimeout(type, deleting ? 45 : 80);
-    }
-    type();
-  </script>
+<!-- CERTS -->
+<section id="certs">
+  <div class="section-label">// credentials</div>
+  <h2>Certifications</h2>
+  <div class="certs-grid">
+    <div class="cert-card">
+      <div class="cert-icon">🎓</div>
+      <div>
+        <div class="cert-name">Google IT Support Professional Certificate</div>
+        <div class="cert-issuer">Coursera · Google</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🔧</div>
+      <div>
+        <div class="cert-name">Technical Support Fundamentals</div>
+        <div class="cert-issuer">Coursera · Google</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🐍</div>
+      <div>
+        <div class="cert-name">Introduction to Python for Cybersecurity</div>
+        <div class="cert-issuer">Coursera</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🐧</div>
+      <div>
+        <div class="cert-name">Linux Fundamentals</div>
+        <div class="cert-issuer">Coursera</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:3rem;">
+    <div class="section-label">// academic background</div>
+    <h2>Education</h2>
+    <div class="edu-list">
+      <div class="edu-item">
+        <div>
+          <div class="edu-degree">Bachelor's Degree in Cybersecurity</div>
+          <div class="edu-school">Central Arizona College</div>
+        </div>
+        <div class="edu-badge">IN PROGRESS</div>
+      </div>
+      <div class="edu-item">
+        <div>
+          <div class="edu-degree">General Educational Development (GED)</div>
+          <div class="edu-school">Rio Salado College</div>
+        </div>
+        <div class="edu-badge">COMPLETED</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">// let's connect</div>
+  <h2>Open to Opportunities</h2>
+  <div class="contact-box">
+    <p>Currently seeking IT support or entry-level cybersecurity roles. Feel free to reach out — I respond promptly.</p>
+    <a href="mailto:Ben.J.Gomez@icloud.com" class="btn btn-primary">Send an Email</a>
+    <div class="contact-links">
+      <a href="tel:4803493722" class="contact-link">📞 (480) 349-3722</a>
+      <a href="mailto:Ben.J.Gomez@icloud.com" class="contact-link">✉ Ben.J.Gomez@icloud.com</a>
+      <a href="#" class="contact-link">📍 Mesa, AZ</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Ben Gomez · Self-hosted on Ubuntu Server · Secured with ModSecurity, Fail2ban, UFW & CrowdSec
+</footer>
 
 </body>
 </html>
